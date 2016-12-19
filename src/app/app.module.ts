@@ -6,16 +6,18 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { PaymentFormComponent } from './payment/payment-form/payment-form.component';
 import { PaymentService } from './payment/payment.service';
+import { ChucknorrisModule } from './chucknorris/chucknorris.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PaymentFormComponent
+    PaymentFormComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    ChucknorrisModule
   ],
   providers: [PaymentService],
   bootstrap: [AppComponent]
