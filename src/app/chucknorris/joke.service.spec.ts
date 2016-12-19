@@ -8,46 +8,48 @@ let mockBackend: MockBackend;
 
 describe(`Service: JokeService`, () => {
 
-   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        JokeService,
-        MockBackend,
-        BaseRequestOptions,
-        {
-          provide: Http,
-          useFactory: (backend: MockBackend, options: BaseRequestOptions) => new Http(backend, options),
-          deps: [MockBackend, BaseRequestOptions]
-        }
-      ]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            providers: [
+                JokeService,
+                {
+                    provide: Http,
+                    useFactory: (mockbackend, options) => {
+                        return new Http(mockbackend, options);
+                    },
+                    deps: [MockBackend, BaseRequestOptions]
+                },
+                MockBackend,
+                BaseRequestOptions,
+            ]
+        });
     });
-  });
 
-  beforeEach(inject([MockBackend, Http],
-    (mb: MockBackend, http: Http) => {
-      mockBackend = mb;
-      jokeService = new JokeService(http);
-    }));
+    beforeEach(inject([MockBackend, Http],
+        (mb: MockBackend, http: Http) => {
+            mockBackend = mb;
+            jokeService = new JokeService(http);
+        }));
 
     it(`should have a service`, () => {
         expect(jokeService).toBeTruthy();
     });
 
     it(`should return expected joke`, async(() => {
-        let joke = 'fake joke 2' ;
+        let joke = 'fake joke 2';
 
         mockBackend.connections.subscribe((connection: MockConnection) => {
             expect(connection.request.method).toEqual(RequestMethod.Get);
             expect(connection.request.url).toEqual(`http://api.icndb.com/jokes/random`);
 
             connection.mockRespond(new Response(new ResponseOptions({
-                body: {value: {joke}}
+                body: { value: { joke } }
             })));
         });
 
 
         jokeService.getJoke().subscribe(result => {
-           expect(result).toEqual(joke);
+            expect(result).toEqual(joke);
         });
     }));
 

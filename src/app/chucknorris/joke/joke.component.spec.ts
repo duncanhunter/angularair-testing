@@ -47,7 +47,7 @@ describe(`Component: JokeComponent`, () => {
   });
 
   it(`should have the correct title `, () => {
-    expect(component.title).toEqual('Chuck Norris Joke');
+    expect(component.title).toEqual('Chuck Norris Jokes');
   });
 
   it(`should get a joke on initialisation`, () => {
