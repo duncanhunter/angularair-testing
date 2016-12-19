@@ -4,8 +4,8 @@ import { PaymentService } from './../payment.service';
 import { Payment } from './../payment';
 
 @Component({
-  selector: 'app-payment',
-  templateUrl: './payment.component.html',
+  selector: 'app-payment-form',
+  templateUrl: './payment-form.component.html',
 })
 export class PaymentFormComponent implements OnInit {
   CREDIT_CARD_NUMBER_PATTERN = '^[0-9]{15,16}$';
@@ -17,6 +17,7 @@ export class PaymentFormComponent implements OnInit {
   ngOnInit() { }
 
   processPayment() {
-     this.paymentService.processPayment(this.payment);
+     this.paymentService.processPayment(this.payment)
+       .subscribe(payment => this.payment = payment);
   }
 }

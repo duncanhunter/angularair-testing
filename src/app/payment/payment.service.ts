@@ -9,9 +9,9 @@ import 'rxjs/add/operator/catch';
 export class PaymentService {
   constructor(private http: Http) { }
 
-  processPayment(payment: any): Observable<Payment> {
+  processPayment(payment: Payment): Observable<Payment> {
     return this.http.post(`FAKE_END_POINT`, JSON.stringify(payment))
-      .map(result => result.json())
+      .map(response => response.json())
       .catch(error => Observable.throw(error));
   }
 
