@@ -4,10 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { PaymentComponent } from './payment/payment/payment.component';
+import { PaymentFormComponent } from './payment/payment-form/payment-form.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PaymentComponent,
+    PaymentFormComponent
   ],
   imports: [
     BrowserModule,
