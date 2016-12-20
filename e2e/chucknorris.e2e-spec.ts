@@ -2,7 +2,7 @@
 import { JokePage } from './chucknorris.po';
 describe('angularair-testing App', function () {
 
-  it('should display a title of "Chuck Norris Jokes"', () => {
+  it('should display a title of "Chuck Norris Jokes"', async() => {
     JokePage.navigateTo();
     expect(JokePage.getTitleText()).toEqual('Chuck Norris Jokes');
   });
@@ -13,7 +13,7 @@ describe('angularair-testing App', function () {
 
     JokePage.getNextQuote();
 
-    const secondJoke =  JokePage.getParagraphText();
+    const secondJoke =  await JokePage.getParagraphText();
     expect(firstJoke).not.toEqual(secondJoke);
   });
 });

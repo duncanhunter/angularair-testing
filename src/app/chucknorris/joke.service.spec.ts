@@ -22,8 +22,8 @@ describe(`Service: JokeService`, () => {
                 JokeService,
                 {
                     provide: Http,
-                    useFactory: (mockbackend, options) => {
-                        return new Http(mockbackend, options);
+                    useFactory: (connectionBackend, options) => {
+                        return new Http(connectionBackend, options);
                     },
                     deps: [MockBackend, BaseRequestOptions]
                 },

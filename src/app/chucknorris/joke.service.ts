@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/observable/throw';
 
 @Injectable()
 export class JokeService {
@@ -12,8 +10,7 @@ export class JokeService {
 
   getJoke(): Observable<any> {
     return this.http.get(`http://api.icndb.com/jokes/random`)
-      .map(response => response.json().value.joke)
-      .catch(e => Observable.throw(e));
+      .map(response => response.json().value.joke);
   }
 
 }
