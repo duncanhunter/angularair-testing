@@ -1,12 +1,11 @@
 import { JokeComponent } from './joke.component';
 import { HttpModule } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { JokeService } from '../joke.service';
 import { async, fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/timeout';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
 
 
 const fakeJoke = 'fake Chuck Norris joke.';
@@ -50,24 +49,26 @@ describe(`Component: JokeComponent`, () => {
     expect(component.title).toEqual('Chuck Norris Jokes');
   });
 
-  it(`should get a joke on initialisation`, () => {
+  it(`should set joke property on component initialisation`, () => {
     spyOn(jokeService, 'getJoke').and.returnValues(
       Observable.of('first joke'));
 
     fixture.detectChanges();
+
     expect(el.textContent).toContain('first joke');
   });
+
 
   it(`should get next quote on click`, fakeAsync(() => {
     spyOn(jokeService, 'getJoke').and.returnValues(
       Observable.of('first joke'),
-      Observable.of('second joke'));
+      Observable.of('second joke').timeout(2000));
 
     fixture.detectChanges();
     expect(el.textContent).toContain('first joke');
     let button = fixture.debugElement.query(By.css('button')).nativeElement;
     button.click();
-    tick();
+    tick(3000);
     fixture.detectChanges();
     expect(el.textContent).toContain('second joke');
 
@@ -81,12 +82,12 @@ describe(`Component: JokeComponent`, () => {
     fixture.detectChanges();
 
     let button = fixture.debugElement.query(By.css('button')).nativeElement;
+
     button.click();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(el.textContent).toContain('second joke');
     });
-
   }));
 
 });
