@@ -1,19 +1,23 @@
+import { browser, by, element } from 'protractor';
 
-import { JokePage } from './chucknorris.po';
-describe('angularair-testing App', function () {
+describe(`Page: Joke Page`, () => {
+  it(`should have a title of "Chuck Norris Jokes"`, () => {
+    browser.get('/');
 
-  it('should display a title of "Chuck Norris Jokes"', async() => {
-    JokePage.navigateTo();
-    expect(JokePage.getTitleText()).toEqual('Chuck Norris Jokes');
+    let title = element(by.css('h1')).getText();
+
+    expect(title).toEqual('Chuck Norris Jokes');
   });
 
-  it(`should have a different joke after clicking "get joke" button`, async() => {
-    JokePage.navigateTo();
-    const firstJoke = JokePage.getParagraphText();
+  it(`should have a new joke on button click`, async() => {
+    browser.get('/');
 
-    JokePage.getNextQuote();
+    let firstJoke = element(by.css('p')).getText();
 
-    const secondJoke =  await JokePage.getParagraphText();
+    element(by.css('button')).click();
+
+    let secondJoke = await element(by.css('p')).getText();
+
     expect(firstJoke).not.toEqual(secondJoke);
   });
 });

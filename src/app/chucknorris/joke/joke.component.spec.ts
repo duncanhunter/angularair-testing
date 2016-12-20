@@ -1,92 +1,100 @@
 import { JokeComponent } from './joke.component';
-import { HttpModule } from '@angular/http';
-import { JokeService } from '../joke.service';
-import { async, fakeAsync, tick, TestBed, ComponentFixture } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { TestBed, ComponentFixture, tick, async, fakeAsync } from '@angular/core/testing';
+import { JokeService } from '../joke.service';
+import { DebugElement } from '@angular/core';
+import { HttpModule } from '@angular/http';
 import 'rxjs/Rx';
-
-
-const fakeJoke = 'fake Chuck Norris joke.';
+import { By } from '@angular/platform-browser';
 
 describe(`Component: JokeComponent`, () => {
-  let jokeService: any;
+
   let component: JokeComponent;
+  let jokeService: JokeService;
   let fixture: ComponentFixture<JokeComponent>;
   let de: DebugElement;
-  let el: HTMLElement;
 
   beforeEach(() => {
 
     // let fakeJokeService = {
     //   getJoke: () => Observable.of(fakeJoke)
     // };
-    // component = new JokeComponent(jokeService);
+    //
 
     TestBed.configureTestingModule({
-      declarations: [JokeComponent],
       imports: [HttpModule],
+      declarations: [JokeComponent],
       providers: [
         JokeService
-        // { provide: JokeService, useValue: fakeJokeService }
       ]
     });
 
     fixture = TestBed.createComponent(JokeComponent);
     component = fixture.componentInstance;
-    de = fixture.debugElement.query(By.css('p'));
-    el = de.nativeElement;
     jokeService = TestBed.get(JokeService);
+    de = fixture.debugElement;
 
   });
 
-  it(`should add 1 + 1`, () => {
+  it(`should add 1 + 1 `, () => {
     expect(1 + 1).toEqual(2);
   });
 
-  it(`should have the correct title `, () => {
+  it(`should have a title of "Chuck Norris Quotes"`, () => {
     expect(component.title).toEqual('Chuck Norris Jokes');
   });
 
-  it(`should set joke property on component initialisation`, () => {
-    spyOn(jokeService, 'getJoke').and.returnValues(
-      Observable.of('first joke'));
+  it(`should set the joke property when component initialised`, () => {
+    spyOn(jokeService, 'getJoke')
+      .and.returnValue(Observable.of('FAKE JOKE'));
 
     fixture.detectChanges();
 
-    expect(el.textContent).toContain('first joke');
+    expect(component.joke).toEqual('FAKE JOKE');
   });
 
-
-  it(`should get next quote on click`, fakeAsync(() => {
-    spyOn(jokeService, 'getJoke').and.returnValues(
-      Observable.of('first joke'),
-      Observable.of('second joke').timeout(2000));
+  it(`should have the joke content bound to the the page`, () => {
+    spyOn(jokeService, 'getJoke')
+      .and.returnValue(Observable.of('FAKE JOKE'));
 
     fixture.detectChanges();
-    expect(el.textContent).toContain('first joke');
+
+    let el = de.query(By.css('p')).nativeElement;
+
+    expect(el.textContent).toEqual('FAKE JOKE');
+
+  });
+
+  it(`should get next quote on click - with fakeAsync`, fakeAsync(() => {
+    spyOn(jokeService, 'getJoke')
+      .and.returnValues(
+      Observable.of('FAKE JOKE'),
+      Observable.of('FAKE JOKE 2').timeout(2000));
+
+    fixture.detectChanges();
+    let el = de.query(By.css('p')).nativeElement;
+    expect(el.textContent).toEqual('FAKE JOKE');
     let button = fixture.debugElement.query(By.css('button')).nativeElement;
     button.click();
-    tick(3000);
     fixture.detectChanges();
-    expect(el.textContent).toContain('second joke');
-
+    tick(3000);
+    expect(el.textContent).toEqual('FAKE JOKE 2');
   }));
 
-  it(`should get next quote on click`, async(() => {
-    spyOn(jokeService, 'getJoke').and.returnValues(
-      Observable.of('first joke'),
-      Observable.of('second joke'));
+  it(`should get next quote on click - with async`, async(() => {
+    spyOn(jokeService, 'getJoke')
+      .and.returnValues(
+      Observable.of('FAKE JOKE'),
+      Observable.of('FAKE JOKE 2'));
 
     fixture.detectChanges();
-
+    let el = de.query(By.css('p')).nativeElement;
+    expect(el.textContent).toEqual('FAKE JOKE');
     let button = fixture.debugElement.query(By.css('button')).nativeElement;
-
     button.click();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(el.textContent).toContain('second joke');
+      expect(el.textContent).toEqual('FAKE JOKE 2');
     });
   }));
 
