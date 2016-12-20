@@ -3,10 +3,18 @@ import { TestBed, inject, async } from '@angular/core/testing';
 import { BaseRequestOptions, Http, RequestMethod, ResponseOptions, Response } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 
-let jokeService: JokeService;
-let mockBackend: MockBackend;
+const fakeJoke = {
+    'type': 'success',
+    'value': {
+        'id': 404,
+        'joke': 'FAKE_JOKE',
+        'categories': []
+    }
+};
 
 describe(`Service: JokeService`, () => {
+    let jokeService: JokeService;
+    let mockBackend: MockBackend;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -36,20 +44,18 @@ describe(`Service: JokeService`, () => {
     });
 
     it(`should return expected joke`, async(() => {
-        let joke = 'fake joke 2';
-
         mockBackend.connections.subscribe((connection: MockConnection) => {
             expect(connection.request.method).toEqual(RequestMethod.Get);
             expect(connection.request.url).toEqual(`http://api.icndb.com/jokes/random`);
 
             connection.mockRespond(new Response(new ResponseOptions({
-                body: { value: { joke } }
+                body: fakeJoke
             })));
         });
 
 
         jokeService.getJoke().subscribe(result => {
-            expect(result).toEqual(joke);
+            expect(result).toEqual(fakeJoke.value.joke);
         });
     }));
 
