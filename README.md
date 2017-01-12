@@ -1,12 +1,13 @@
 # Talk: Techniques and practices for testing Angular 2
 
+## Slides - http://bit.ly/ndc-london-2017-angular-testing
+
 ## To run this code:
 ```
 git clone https://github.com/duncanhunter/ndc-london-testing-angular
 npm install
 ng serve
 ```
-
 
 ## Development server
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
