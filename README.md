@@ -1,5 +1,3 @@
-# AngularairTesting
-
 # Talk: Techniques and practices for testing Angular 2
 
 ## To run this code:
